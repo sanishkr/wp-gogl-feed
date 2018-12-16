@@ -8,31 +8,46 @@ import {
   Route,
 } from 'react-router-dom';
 import Header from './Header';
-// import Carditem from './Carditem';
+import Carditem from './CardItem';
 import { gClientId } from '../resources/react-config';
-
-const responseGoogle = (response) => {
-  console.log(response);
-  console.log(search(response.profileObj.email))
-}
-
-function search(email){
-  // console.log('Search Button Clicked',this.state.query);
-  let url = `http://localhost:3001/getAllFeedsbasedOnUser/${email}`;
-  //console.log(url);
-  fetch(url,{
-      method: 'GET'
-  }).then(response=>response.json())
-  .then(jsonObj=>{console.log(jsonObj)});
-}
-
-const logout = () => {
-  console.log("Logged out");
-}
 
 class App extends Component {
   constructor(props){
     super(props);
+    this.state = {
+      loginState: false,
+      email: '',
+      feeds : []
+    }
+    console.log("Current State",this.state);
+    
+  }
+  responseGoogle = (response) => {
+    console.log(response);
+    //console.log(this.search(response.profileObj.email))
+    if(response.googleId){
+      this.setState({loginState: true,email:response.profileObj.email})
+      this.search(this.state.email)
+    }else{
+      console.log("Login Failed",response)
+    }
+  }
+  search(email){
+    // console.log('Search Button Clicked',this.state.query);
+    let url = `http://localhost:3001/getAllFeedsbasedOnUser/${email}`;
+    //console.log(url);
+    fetch(url,{
+        method: 'GET'
+    }).then(response=>response.json())
+    .then(jsonObj=>{
+      this.setState({feeds:jsonObj});
+      console.log("Current State",this.state);
+    });
+  }
+  logout = () => {
+    this.setState({loginState: false,email:'', feeds: []})
+    console.log("Logged out");
+    console.log("Current State",this.state);
   }
   
   render() {
@@ -40,21 +55,22 @@ class App extends Component {
       <div>
         <Header/>
         <div className="container container-main">
-          <div className="card-deck">
-            {/* {orderItems.map(item=>{
-              return <Carditem order={item} key={item.id} />
-            })} */}
-
-            <GoogleLogin
-              clientId={gClientId}
-              onSuccess={responseGoogle}
-              onFailure={responseGoogle}
-            />
+        {
+            (this.state.loginState) ?
             <GoogleLogout
-              buttonText="Logout"
-              onLogoutSuccess={logout}
-            >
-            </GoogleLogout>
+            buttonText="Logout"
+            onLogoutSuccess={this.logout}></GoogleLogout> : <GoogleLogin
+            clientId={gClientId}
+            onSuccess={this.responseGoogle}
+            onFailure={this.responseGoogle}
+          />
+        }
+
+
+          <div className="card-deck">
+            {this.state.feeds.map(item=>{
+              return <Carditem feeditem={item} key={item._id} />
+            })}
           </div>
           <div className="row">
             {/* <Router>
