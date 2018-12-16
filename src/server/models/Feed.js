@@ -21,7 +21,7 @@ const FeedSchema = new Schema({
     videos:{type:Array, default:[]},
     stats:{
         feedStatus:{
-            type:String, default: true
+            type:Boolean, default: true
         },
         createdAt:{
             type: Date, default: Date.now()

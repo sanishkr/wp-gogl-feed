@@ -4,15 +4,19 @@ const apiRoute = express.Router();
 const bodyParser = require('body-parser');
 const cors = require("cors");
 const Feed = require('./models/Feed');
+const User = require('./models/User');
 
 app.use(cors()); // to send CORS headers.
-app.use(express.urlencoded()); // to support URL-encoded bodies.
-app.use(bodyParser.urlencoded({ extended: false })); // Parses urlencoded bodies
+// app.use(express.urlencoded()); // to support URL-encoded bodies.
+app.use(bodyParser.urlencoded({ extended: true })); // Parses urlencoded bodies
 app.use(bodyParser.json()); // Send JSON responses
 
 // let Feeds = [];
 apiRoute.get("/addUser",(req,res)=>{
   // console.log(req)
+  // User.find({"email" : "dfss@ddzff.dfa"},function(err,UserList){
+  //   console.log(UserList);
+  // });
   res.send(req.params)
 });
 

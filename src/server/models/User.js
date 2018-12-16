@@ -4,11 +4,11 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
     googleId:{type:String, default:'', required:true},
     name:{type:String, default:''},
-    email:{type:String, default:''},
+    email:{type:String, default:'', required:true},
     imageURL:{type:String, default:''},
     stats:{
         accountStatus:{
-            type:String, default: false
+            type:Boolean, default: false
         },
         createdAt:{
             type: Date, default: Date.now()

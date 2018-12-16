@@ -13,7 +13,19 @@ import { gClientId } from '../resources/react-config';
 
 const responseGoogle = (response) => {
   console.log(response);
+  console.log(search(response.profileObj.email))
 }
+
+function search(email){
+  // console.log('Search Button Clicked',this.state.query);
+  let url = `http://localhost:3001/getAllFeedsbasedOnUser/${email}`;
+  //console.log(url);
+  fetch(url,{
+      method: 'GET'
+  }).then(response=>response.json())
+  .then(jsonObj=>{console.log(jsonObj)});
+}
+
 const logout = () => {
   console.log("Logged out");
 }
