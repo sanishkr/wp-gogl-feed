@@ -1,57 +1,53 @@
 const express = require("express");
 const app = express();
+const apiRoute = express.Router();
+const bodyParser = require('body-parser');
 const cors = require("cors");
+const Feed = require('./models/Feed');
 
 app.use(cors()); // to send CORS headers.
 app.use(express.urlencoded()); // to support URL-encoded bodies.
-app.use(express.json()); // to support JSON-encoded bodies.
+app.use(bodyParser.urlencoded({ extended: false })); // Parses urlencoded bodies
+app.use(bodyParser.json()); // Send JSON responses
 
-let Feeds = [];
-
-app.get("/", (_req, res) =>
-  res.send(`
-  <span>Hello API</span>
-  `)
-);
-
-app.get("/addUser",(req,res)=>{
+// let Feeds = [];
+apiRoute.get("/addUser",(req,res)=>{
   // console.log(req)
-  res.send(Feeds)
+  res.send(req.params)
 });
 
-app.get("/getAllFeedsbasedOnUser",(req,res)=>{
-  // console.log(req)
-  let Feeds = [
-    {
-      "text":"some text",
-      "images":[
-        "url1",
-        "url2"
-      ],
-      "links":[
-        {
-          "link1":{
-            "URL":"sampleurl"
-          }
-        }
-      ],
-      "videos":[],
-      "stats":{
-
-      }
+apiRoute.get("/getAllFeedsbasedOnUser/:email",(req,res,next)=>{
+  if (!req.params.email) {
+    res.status(422).send({ error: 'Please choose any email' });
+    return next();
+  }
+  var email = req.params.email;
+  
+  Feed.find({"email":email},function (err, FeedList) {
+    if(FeedList){
+        console.log(FeedList);
+        res.json(FeedList);
+    }else{
+      console.log(err)
+        res.json({
+            success: false,
+            data: {},
+            code: 404
+        });
     }
-  ];
-  res.send(Feeds)
+  });
+  // res.send(JSON.stringify(Feeds.find({"_id":"5c16372c77d8589a420d54df"})));
 });
 
-app.post("/addFeed",(req,res)=>{
+apiRoute.post("/addFeed",(req,res)=>{
   //console.log(req.body)
   let m = req.body
-  Feeds.push(m)
+  //Feeds.push(m)
   //console.log(Feeds)
   let msg = {"message":"Feed Added","status":true};
   res.send(msg)
   // res.send(m)
 });
 
+app.use("/", apiRoute);
 module.exports = app;
