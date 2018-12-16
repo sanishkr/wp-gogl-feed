@@ -3,5 +3,5 @@
 // export const database = 'mongodb://localhost/wpgooglefeed';
 // export const dbport = 27017;
 module.exports = {
-    database : "mongodb://sanishkr:9342434037sns@ds135704.mlab.com:35704/wpgooglefeed"
+    database : "mongodb://localhost/wpgooglefeed"
 };

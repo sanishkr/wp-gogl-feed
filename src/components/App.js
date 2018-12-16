@@ -15,7 +15,7 @@ const responseGoogle = (response) => {
   console.log(response);
 }
 const logout = () => {
-  console.log("Loged out");
+  console.log("Logged out");
 }
 
 class App extends Component {
