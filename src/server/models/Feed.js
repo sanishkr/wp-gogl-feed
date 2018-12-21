@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const FeedSchema = new Schema({
     email:{type:String, default:'', required:true},
     images:{type:Array, default:[]},
+    text: {type:String, default:''},
     link:{
         linkURL:{
             type: String, default: '#'

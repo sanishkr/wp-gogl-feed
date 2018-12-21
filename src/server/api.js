@@ -58,7 +58,6 @@ apiRoute.get("/getAllFeedsbasedOnUser/:email",(req,res,next)=>{
         });
     }
   });
-  // res.send(JSON.stringify(Feeds.find({"_id":"5c16372c77d8589a420d54df"})));
 });
 
 /**
